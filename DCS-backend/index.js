@@ -14,4 +14,6 @@ app.use(cors())
 // app.use(erorHandler);
 app.use("/api" , require("./routes/user-routes"));
 
+app.use("/api/dashboard" , require("./routes/dashboard-routes"));
+
 app.listen(port , ()=> console.log(`Server started at Port ${port}`));

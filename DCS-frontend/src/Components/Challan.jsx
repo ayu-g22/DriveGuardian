@@ -10,27 +10,21 @@ const Challan = () => {
   // Function to fetch challan data from the backend
   const fetchChallanData = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/challans'); // Adjust URL if needed
-      const data = await response.json();
-      if(!data){
-        const challanData = [
-          { name: 'John Doe', lastDrive: '2024-09-01', challan: 'Charged', amount: 100, dcsChange: '+50' },
-          { name: 'Jane Smith', lastDrive: '2024-08-25', challan: 'Not Charged', amount: 0, dcsChange: '0' },
-          { name: 'Mike Johnson', lastDrive: '2024-08-30', challan: 'Charged', amount: 150, dcsChange: '-30' },
-          { name: 'John Doe', lastDrive: '2024-09-01', challan: 'Charged', amount: 100, dcsChange: '+50' },
-          { name: 'Jane Smith', lastDrive: '2024-08-25', challan: 'Not Charged', amount: 0, dcsChange: '0' },
-          { name: 'Mike Johnson', lastDrive: '2024-08-30', challan: 'Charged', amount: 150, dcsChange: '-30' },
-          { name: 'John Doe', lastDrive: '2024-09-01', challan: 'Charged', amount: 100, dcsChange: '+50' },
-          { name: 'Jane Smith', lastDrive: '2024-08-25', challan: 'Not Charged', amount: 0, dcsChange: '0' },
-          { name: 'Mike Johnson', lastDrive: '2024-08-30', challan: 'Charged', amount: 150, dcsChange: '-30' },
-          { name: 'John Doe', lastDrive: '2024-09-01', challan: 'Charged', amount: 100, dcsChange: '+50' },
-          { name: 'Jane Smith', lastDrive: '2024-08-25', challan: 'Not Charged', amount: 0, dcsChange: '0' },
-          { name: 'Mike Johnson', lastDrive: '2024-08-30', challan: 'Charged', amount: 150, dcsChange: '-30' },
-          // Add more entries for testing
-        ];
-        setChallanData(challanData);
+      const response = await fetch('http://localhost:4000/api/dashboard/challan'); // Adjust URL if needed
+      const result = await response.json();
+      
+      if (result.ok) {
+        const data = result.data.map(item => ({
+          name: item.name,
+          lastDrive: item.Last_Drive,
+          challan: item.Challan,
+          amount: item.Amount,
+          dcsChange: item.DCS_Charge
+        }));
+        setChallanData(data);
+      } else {
+        console.error('Failed to fetch data:', result.message);
       }
-      setChallanData(data);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -69,7 +63,7 @@ const Challan = () => {
                 <tr key={index} className="border-b">
                   <td className="py-3 px-6">{entry.name}</td>
                   <td className="py-3 px-6">{entry.lastDrive}</td>
-                  <td className={`py-3 px-6 ${entry.challan === 'Charged' ? 'text-red-500' : 'text-green-500'}`}>{entry.challan}</td>
+                  <td className={`py-3 px-6 ${entry.challan ? 'text-red-500' : 'text-green-500'}`}>{entry.challan}</td>
                   <td className="py-3 px-6">{entry.amount > 0 ? `₹${entry.amount}` : '-'}</td>
                   <td className="py-3 px-6">{entry.dcsChange}</td>
                 </tr>
