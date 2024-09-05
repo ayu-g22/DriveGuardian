@@ -10,7 +10,10 @@ const Register = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isVehicleRegistered, setIsVehicleRegistered] = useState('no');
   const [vehicleNumber, setVehicleNumber] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirm, setConfirmPassword] = useState('');
   const [dlNumber, setDlNumber] = useState('');
+
 
   const navigate = useNavigate();
 
@@ -37,7 +40,7 @@ const Register = () => {
       <div className="flex justify-center items-center min-h-screen bg-gray-100" style={{
       backgroundImage: `url(${bg})`, // Set the background image
     }}>
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md mt-20">
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md mt-24">
         <h2 className="text-2xl font-semibold mb-6 text-center">Register</h2>
         <form onSubmit={handleSubmit}>
           {/* Name */}
@@ -69,7 +72,32 @@ const Register = () => {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+              Confirm Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={confirm}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
           {/* Phone Number */}
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phoneNumber">
