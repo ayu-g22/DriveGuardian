@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DCSGauge from './Slider';
-import Instructions from './Instructions';
+import Instructions from './Scoring';
 
 const Challan = () => {
   const navigate = useNavigate();

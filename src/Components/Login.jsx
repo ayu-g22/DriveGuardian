@@ -47,7 +47,7 @@ const SignIn = () => {
   const handleSignIn = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/authenticate', {
+      const response = await fetch('http://localhost:5000/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -61,7 +61,7 @@ const SignIn = () => {
         console.log('Sign in successful:', result);
         // Store the token in localStorage or context
         localStorage.setItem('token', result.token);
-        window.location.href = '/'; // Redirect after successful sign-in
+        window.location.href = '/dashboard'; // Redirect after successful sign-in
       } else if(response.newUser){
         alert("You need to register first. Redirecting you to the registration page.");
         window.location.href = '/register';

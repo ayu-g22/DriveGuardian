@@ -17,21 +17,50 @@ const Register = () => {
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log({
+
+    if (password !== confirm) {
+      alert('Passwords do not match. Please try again.');
+      return; // Exit the function early if passwords do not match
+    }
+    
+    const formData = {
       name,
       email,
       phoneNumber,
       isVehicleRegistered,
       vehicleNumber,
       dlNumber,
-    });
+    };
+  
+    try {
+      const response = await fetch('http://localhost:5000/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Registration successful:', data);
+        // Handle success (e.g., show a success message, redirect, etc.)
+      } else {
+        const errorData = await response.json();
+        console.error('Registration failed:', errorData);
+        // Handle error (e.g., show an error message)
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+      // Handle network error or unexpected error
+    }
   };
+  
 
   const handleSignInRedirect = () => {
-    navigate('/'); // Redirect to the sign-in page
+    navigate('/dashboard'); // Redirect to the sign-in page
   };
 
   return (
@@ -115,7 +144,7 @@ const Register = () => {
 
           {/* Vehicle Registered */}
           <fieldset className="mb-4">
-            <legend className="block text-gray-700 text-sm font-bold mb-2">Is Vehicle Registered?</legend>
+            <legend className="block text-gray-700 text-sm font-bold mb-2">Do you own a vehicle?</legend>
             <div className="flex items-center">
               <input
                 id="vehicleYes"

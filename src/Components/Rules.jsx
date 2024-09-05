@@ -1,4 +1,3 @@
-// src/Rules.js
 import React from 'react';
 import NavHalf from './NavHalf';
 
@@ -18,15 +17,19 @@ const Rules = () => {
 
   return (
     <>
-        <NavHalf />
-        <div className="pt-20 p-20 bg-green-200 w-1/2 flex flex-col items-center">
-      <h2 className="text-xl font-semibold m-4">Rules:</h2>
-      <ul className="list-disc pl-6 space-y-2">
-        {rulesList.map((rule, index) => (
-          <li key={index} className="text-gray-800">{rule}</li>
-        ))}
-      </ul>
-    </div>
+      <NavHalf />
+      {/* Parent Container */}
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        {/* Rules Section */}
+        <div className="p-8 w-full max-w-md flex flex-col items-center bg-white rounded-lg shadow-md">
+          <h2 className="text-xl font-semibold mb-4">Rules & Regulations:</h2>
+          <ul className="list-disc pl-6 space-y-2">
+            {rulesList.map((rule, index) => (
+              <li key={index} className="text-gray-800">{rule}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </>
   );
 };

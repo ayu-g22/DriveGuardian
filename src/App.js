@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './Components/Navbar';
 import Challan from './Components/Challan';
 import LogoutButton from './Components/Logout';
-import SignIn from './Components/SignIn';
+import SignIn from './Components/Login';
 import Register from './Components/Register';
 import Rules from './Components/Rules';
 
