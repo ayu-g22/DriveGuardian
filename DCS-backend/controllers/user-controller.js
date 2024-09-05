@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 // const jwt = require("jsonwebtoken");
 
 const regiterUser = asyncHandler(async (req, res) => {
+  console.log('body :',req.body);
   const {
     name,
     email,
@@ -44,14 +45,14 @@ const regiterUser = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
-  const { phoneNumber, password } = req.body;
+  const { phoneNumber, otpOrPassword } = req.body;
   const user = await User.findOne({ phoneNumber });
   if (!user){
     res.status(400).json({ msg : "User Not Registered" , newUser : true});
   }
   // Compare the password with th user password in the database
-  const pass = password;
-  if (user && (await bcrypt.compare(password, user.password))) {
+  const pass = otpOrPassword;
+  if (user && (await bcrypt.compare(pass, user.password))) {
     res.status(200).json({ ok : true });
   } else {
     res.status(401);
