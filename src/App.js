@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navbar from './Components/Navbar';
+import Challan from './Components/Challan';
+import LogoutButton from './Components/Logout';
+import SignIn from './Components/SignIn';
+import Register from './Components/Register';
+import Rules from './Components/Rules';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        {/* SignIn page route */}
+        <Route path="/" element={<SignIn />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/rules" element={<Rules />} />
+
+        
+        {/* Main page route */}
+        <Route
+          path="/dashboard"
+          element={
+            <div className="relative min-h-screen bg-gray-100">
+              <Navbar />
+              <Challan />
+              <LogoutButton />
+            </div>
+          }
+        />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
