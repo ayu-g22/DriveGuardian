@@ -21,7 +21,7 @@ const Navbar = () => {
         {/* Menu Links */}
         <div className="hidden md:flex space-x-8">
         <a href="#" className="hover:text-orange-400 transition duration-300">Home</a>
-          <a href="#rules" className="hover:text-orange-400 transition duration-300">Rules</a>
+          <a href="/rules" className="hover:text-orange-400 transition duration-300">Rules</a>
           <a href="#improve" className="hover:text-orange-400 transition duration-300">Improve with us</a>
           <a href="#about" className="hover:text-orange-400 transition duration-300">About Us</a>
         </div>

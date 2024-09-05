@@ -37,7 +37,7 @@ const regiterUser = asyncHandler(async (req, res) => {
   });
 
   if (user) {
-    res.status(201).json({ msg: "User created Successfully" , user : user });
+    res.status(201).json({ msg: "User created Successfully" , ok: true });
   } else {
     res.status(400);
     res.json({msg : "Failed to create a new User"});

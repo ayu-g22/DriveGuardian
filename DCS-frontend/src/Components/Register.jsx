@@ -29,6 +29,7 @@ const Register = () => {
       name,
       email,
       phoneNumber,
+      password,
       isVehicleRegistered,
       vehicleNumber,
       dlNumber,
@@ -46,6 +47,7 @@ const Register = () => {
       if (response.ok) {
         const data = await response.json();
         console.log('Registration successful:', data);
+        window.location.href = '/dashboard';
         // Handle success (e.g., show a success message, redirect, etc.)
       } else {
         const errorData = await response.json();
