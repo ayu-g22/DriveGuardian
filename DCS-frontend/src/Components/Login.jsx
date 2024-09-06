@@ -66,10 +66,11 @@ const SignIn = () => {
       const result = await response.json();
       if (response.ok) {
         toast.success('Sign in successful!', { position: 'top-center' });
-        localStorage.setItem('token', result.token);
+        localStorage.setItem('userid', result?.userId);
+        localStorage.setItem('token', result?.token);
         window.location.href = '/dashboard'; // Redirect after successful sign-in
       } else {
-        if(result.msg=="User Not Registered"){
+        if(result.msg==="User Not Registered"){
           toast.warn("You need to register first. Redirecting you to the registration page.", { position: 'top-center' });
           setTimeout(() => {
             window.location.href = '/register';

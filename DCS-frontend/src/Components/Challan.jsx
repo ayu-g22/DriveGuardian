@@ -12,7 +12,14 @@ const Challan = () => {
   // Function to fetch challan data from the backend
   const fetchChallanData = async () => {
     try {
-      const response = await fetch('http://localhost:4000/api/dashboard/challan'); // Adjust URL if needed
+      const uid = localStorage.getItem('userid');
+      const response = await fetch('http://localhost:4000/api/dashboard/challan',{
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          uid
+        }),
+      });
       const result = await response.json();
       if (result.ok) {
         const data = result.data.map(item => ({

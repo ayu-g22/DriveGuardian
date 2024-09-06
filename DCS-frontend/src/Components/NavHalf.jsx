@@ -30,8 +30,8 @@ const NavHalf = () => {
 
           {/* User Profile / Login */}
           <div className="hidden md:flex items-center space-x-4">
-            <a href="/login" className="hover:text-orange-400 transition duration-300">Login</a>
-            <a href="/" className="hover:text-orange-400 transition duration-300">Sign Up</a>
+            <a href="/" className="hover:text-orange-400 transition duration-300">Login</a>
+            <a href="/register" className="hover:text-orange-400 transition duration-300">Sign Up</a>
           </div>
 
           {/* Mobile Menu Button */}

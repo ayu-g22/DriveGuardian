@@ -16,7 +16,14 @@ const Navbar = () => {
   useEffect(() => {
     // Fetch options from backend
     const fetchOptions = async () => {
-      const response = await fetch('/api/get-driver-options'); // Adjust the endpoint as needed
+      const uid = localStorage.getItem('userid');
+      const response = await fetch('http://localhost:4000/api/get-drivers',{
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          uid
+        }),
+      }); // Adjust the endpoint as needed
       const data = await response.json();
       setOptions(['Me', ...data]); // Prepend "Me" to the list
     };
@@ -56,7 +63,7 @@ const Navbar = () => {
 
         {/* Menu Links */}
         <div className="hidden md:flex space-x-8">
-        <a href="#" className="hover:text-orange-400 transition duration-300">Home</a>
+        <a href="/dashboard" className="hover:text-orange-400 transition duration-300">Home</a>
           <a href="/rules" className="hover:text-orange-400 transition duration-300">Rules</a>
           <a href="/improve" className="hover:text-orange-400 transition duration-300">Improve with us</a>
           <a href="/aboutus" className="hover:text-orange-400 transition duration-300">About Us</a>

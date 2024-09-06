@@ -7,6 +7,7 @@ import Register from './Components/Register';
 import Rules from './Components/Rules';
 import Improve from './Components/Improve';
 import AboutUs from './Components/AboutUs';
+import Settings from './Components/Settings';
 
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/rules" element={<Rules />} />
         <Route path="/improve" element={<Improve />} />
         <Route path="/aboutus" element={<AboutUs />} />
+        <Route path="/settings" element={<Settings />} />
 
 
         

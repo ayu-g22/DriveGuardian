@@ -15,7 +15,14 @@ const DCSGauge = () => {
   useEffect(() => {
     const fetchDCSValue = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/dcs-value'); // Replace with your backend endpoint
+        const uid=localStorage.getItem('userid')
+        const response = await fetch('http://localhost:4000/api/dcs-value',{
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            uid
+          }),
+        }); // Replace with your backend endpoint
         if (!response.ok) {
           throw new Error('Failed to fetch DCS value');
         }
