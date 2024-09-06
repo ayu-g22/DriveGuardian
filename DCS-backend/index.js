@@ -16,4 +16,6 @@ app.use("/api" , require("./routes/user-routes"));
 
 app.use("/api/dashboard" , require("./routes/dashboard-routes"));
 
+app.use("/api/transfer" , require("./routes/tranfer-routes"));
+
 app.listen(port , ()=> console.log(`Server started at Port ${port}`));
