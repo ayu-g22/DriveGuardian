@@ -27,7 +27,7 @@ const DCSGauge = () => {
           throw new Error('Failed to fetch DCS value');
         }
         const data = await response.json();
-        setDCSValue(data.dcsValue); // Assuming the response is in the form { dcsValue: 500 }
+        setDCSValue(data?.dcsValue); // Assuming the response is in the form { dcsValue: 500 }
         setLoading(false); // Set loading to false once data is fetched
       } catch (error) {
         setDCSValue(0);

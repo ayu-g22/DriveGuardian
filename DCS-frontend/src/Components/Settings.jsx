@@ -3,8 +3,7 @@ import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import NavBar from './Navbar';
 
 const Settings = () => {
-  
-  // State variables
+  const [acquaintances, setAcquaintances] = useState([]);
   const [settings, setSettings] = useState({
     username: 'JohnDoe',
     email: 'john.doe@example.com',
@@ -50,24 +49,47 @@ const Settings = () => {
 
   // Fetch acquaintances data from backend on component mount
   useEffect(() => {
+    const uid = localStorage.getItem('userId');
     // Replace with your backend API endpoint
-    fetch('http://localhost:4000/api/get-drivers')
+    fetch('http://localhost:4000/api/get-drivers', {
+      method: 'POST', // Change to POST method
+      headers: {
+        'Content-Type': 'application/json', // Set appropriate content type
+      },
+      body: JSON.stringify({ uid }),
+    })
       .then((response) => response.json())
-      .then((data) => setSettings((prev) => ({ ...prev, acquitances: {name:data?.name,phone: data?.phoneNumber} })))
+      .then((data) => {
+        if (data.ok) {
+          // Assuming data.data is an array of acquaintances
+          setAcquaintances(data.data.map((item) => ({
+            id: item['id'], // Ensure you have an ID to uniquely identify each acquaintance
+            name: item.name,
+            phoneNumber: item['phoneNumber'],
+          })));
+        } else {
+          console.error('Failed to fetch data:', data.message);
+        }
+      })
       .catch((error) => console.error('Error fetching acquaintances:', error));
   }, []);
 
   // Handler functions
   const handleDeleteAcquaintance = (id) => {
-    const uid=localStorage.getItem('userId');
+    const uid = localStorage.getItem('userId');
     // Call API to delete acquaintance from backend
-    fetch(`http://localhost:4000/api/acquaintances/${id}`, { method: 'DELETE',userId:uid })
+    fetch(`http://localhost:4000/api/members/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId: uid }),
+    })
       .then((response) => {
         if (response.ok) {
-          setSettings((prev) => ({
-            ...prev,
-            acquitances: prev.acquitances.filter((member) => member.id !== id),
-          }));
+          setAcquaintances((prev) =>
+            prev.filter((member) => member.id !== id)
+          );
         } else {
           console.error('Failed to delete acquaintance.');
         }
@@ -113,22 +135,22 @@ const Settings = () => {
   };
 
   const handleAddAcquaintance = () => {
-    const uid=localStorage.getItem('userId');
+    const uid = localStorage.getItem('userId');
     // Call API to add acquaintance to backend
     fetch('http://localhost:4000/api/acquaintances', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newAcquaintance[1],uid),
+      body: JSON.stringify({ ...newAcquaintance, uid }),
     })
       .then((response) => response.json())
       .then((data) => {
-        setSettings((prev) => ({
+        setAcquaintances((prev) => [
           ...prev,
-          acquitances: [...prev.acquitances, data],
-        }));
-        setNewAcquaintance({ name: '', email: '' });
+          { id: data.id, ...newAcquaintance }, // Ensure the ID is handled correctly
+        ]);
+        setNewAcquaintance({ name: '', phoneNumber: '' });
         handleModalClose();
       })
       .catch((error) => console.error('Error adding acquaintance:', error));
@@ -228,9 +250,9 @@ const Settings = () => {
                 </button>
               </div>
 
-              {/* Confirm New Password Field */}
+              {/* Confirm Password Field */}
               <div className="mb-4 flex items-center">
-                <label className="block text-gray-700 mr-4">Confirm New Password</label>
+                <label className="block text-gray-700 mr-4">Confirm Password</label>
                 <input
                   type="password"
                   name="confirm"
@@ -246,30 +268,45 @@ const Settings = () => {
                   ✏️
                 </button>
               </div>
-
-              <button className="bg-blue-500 text-white px-4 py-2 rounded">Update Password</button>
+              <button className="bg-blue-500 text-white px-4 py-2 rounded">Change Password</button>
             </div>
           </section>
 
-          {/* Notification Preferences */}
+          {/* Notifications */}
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Notification Preferences</h2>
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Notification Settings</h2>
             <div className="bg-white p-6 rounded-lg shadow-md">
-              {Object.keys(notifications).map((notificationType) => (
-                <div key={notificationType} className="flex items-center mb-2">
-                  <input
-                    type="checkbox"
-                    id={notificationType}
-                    name={notificationType}
-                    checked={notifications[notificationType]}
-                    onChange={handleNotificationChange}
-                    className="mr-2"
-                  />
-                  <label htmlFor={notificationType} className="text-gray-700">
-                    {notificationType.charAt(0).toUpperCase() + notificationType.slice(1).replace(/([A-Z])/g, ' $1')}
-                  </label>
-                </div>
-              ))}
+              <label className="block text-gray-700 mb-2">
+                <input
+                  type="checkbox"
+                  name="email"
+                  checked={notifications.email}
+                  onChange={handleNotificationChange}
+                  className="mr-2"
+                />
+                Email Notifications
+              </label>
+              <label className="block text-gray-700 mb-2">
+                <input
+                  type="checkbox"
+                  name="sms"
+                  checked={notifications.sms}
+                  onChange={handleNotificationChange}
+                  className="mr-2"
+                />
+                SMS Notifications
+              </label>
+              <label className="block text-gray-700 mb-2">
+                <input
+                  type="checkbox"
+                  name="push"
+                  checked={notifications.push}
+                  onChange={handleNotificationChange}
+                  className="mr-2"
+                />
+                Push Notifications
+              </label>
+              <button className="bg-blue-500 text-white px-4 py-2 rounded">Save Changes</button>
             </div>
           </section>
 
@@ -277,95 +314,86 @@ const Settings = () => {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">Privacy Settings</h2>
             <div className="bg-white p-6 rounded-lg shadow-md">
-              {Object.keys(privacy).map((privacySetting) => (
-                <div key={privacySetting} className="flex items-center mb-2">
-                  <input
-                    type="checkbox"
-                    id={privacySetting}
-                    name={privacySetting}
-                    checked={privacy[privacySetting]}
-                    onChange={handlePrivacyChange}
-                    className="mr-2"
-                  />
-                  <label htmlFor={privacySetting} className="text-gray-700">
-                    {privacySetting.charAt(0).toUpperCase() + privacySetting.slice(1).replace(/([A-Z])/g, ' $1')}
-                  </label>
-                </div>
-              ))}
+              <label className="block text-gray-700 mb-2">
+                <input
+                  type="checkbox"
+                  name="showProfilePicture"
+                  checked={privacy.showProfilePicture}
+                  onChange={handlePrivacyChange}
+                  className="mr-2"
+                />
+                Show Profile Picture
+              </label>
+              <label className="block text-gray-700 mb-2">
+                <input
+                  type="checkbox"
+                  name="showOnlineStatus"
+                  checked={privacy.showOnlineStatus}
+                  onChange={handlePrivacyChange}
+                  className="mr-2"
+                />
+                Show Online Status
+              </label>
+              <button className="bg-blue-500 text-white px-4 py-2 rounded">Save Changes</button>
             </div>
           </section>
 
-          {/* Manage Acquaintances */}
-          <section>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex justify-between items-center">
-              Manage Acquaintances
+          {/* Acquaintances */}
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Acquaintances</h2>
+            <div className="bg-white p-6 rounded-lg shadow-md">
               <button
                 onClick={handleModalOpen}
-                className="bg-blue-500 text-white px-4 py-2 rounded"
+                className="bg-green-500 text-white px-4 py-2 rounded mb-4"
               >
-                Add
+                Add Acquaintance
               </button>
-            </h2>
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              {/* List of Acquaintances */}
-              {settings.acquitances.map((acquaintance) => (
-                <div key={acquaintance.id} className="flex justify-between items-center mb-2">
-                  <p className="text-gray-800">{acquaintance.name}</p>
-                  <button
-                    onClick={() => handleDeleteAcquaintance(acquaintance.id)}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    <FaTrashAlt />
-                  </button>
-                </div>
-              ))}
+            
             </div>
           </section>
+
+          {/* Modal for Adding Acquaintance */}
+          {modalOpen && (
+            <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <h2 className="text-2xl font-semibold text-gray-800 mb-4">Add Acquaintance</h2>
+                <label className="block mb-4">
+                  <span className="text-gray-700">Name</span>
+                  <input
+                    type="text"
+                    value={newAcquaintance.name}
+                    onChange={(e) => setNewAcquaintance({ ...newAcquaintance, name: e.target.value })}
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                </label>
+                <label className="block mb-4">
+                  <span className="text-gray-700">Phone Number</span>
+                  <input
+                    type="text"
+                    value={newAcquaintance.phoneNumber}
+                    onChange={(e) => setNewAcquaintance({ ...newAcquaintance, phoneNumber: e.target.value })}
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                </label>
+                <div className="flex justify-end">
+                  <button
+                    onClick={handleModalClose}
+                    className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleAddAcquaintance}
+                    className="bg-blue-500 text-white px-4 py-2 rounded"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
-
-      {/* Modal */}
-      {modalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Add Acquaintance</h2>
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2">Name</label>
-              <input
-                type="text"
-                name="name"
-                value={newAcquaintance.name}
-                onChange={(e) => setNewAcquaintance({ ...newAcquaintance, name: e.target.value })}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2">Phone Number</label>
-              <input
-                type="email"
-                name="email"
-                value={newAcquaintance.email}
-                onChange={(e) => setNewAcquaintance({ ...newAcquaintance, phoneNumber: e.target.value })}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-            <div className="flex justify-end">
-              <button
-                onClick={handleModalClose}
-                className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleAddAcquaintance}
-                className="bg-blue-500 text-white px-4 py-2 rounded"
-              >
-                Add
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 };

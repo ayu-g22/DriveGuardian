@@ -1,8 +1,40 @@
 // Modal.js
 import React, { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Modal = ({ isOpen, onClose, options }) => {
   const [selectedOption, setSelectedOption] = useState('');
+
+  const handleConfirmClick = async () => {
+    const timestamp=Date.now();
+    if (selectedOption) {
+      try {
+        // Send the selected option to the backend API
+        const response = await fetch('http://localhost:4000/api/update-database', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ selectedOption,timestamp }),
+        });
+    
+        const result = await response.json();
+        if (result.ok) {
+          // Handle success
+          toast.success('Data updated successfully!', { position: "top-center" });
+        } else {
+          // Handle failure
+          toast.error(`Failed to update data: ${result.message}`, { position: "top-center" });
+        }
+      } catch (error) {
+        toast.error(`Error updating data: ${error.message}`, { position: "top-center" });
+      } finally {
+        // Close the modal
+        onClose();
+      }
+    } else {
+      toast.warning('Please select an option!', { position: "top-center" });
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -14,7 +46,7 @@ const Modal = ({ isOpen, onClose, options }) => {
         <select 
           value={selectedOption} 
           onChange={(e) => setSelectedOption(e.target.value)} 
-          className="border p-2 rounded mb-4 w-full"
+          className="border p-2 rounded mb-4 w-full text-black"
         >
           <option value="">Select...</option>
           {options.map((option, index) => (
@@ -22,14 +54,14 @@ const Modal = ({ isOpen, onClose, options }) => {
           ))}
         </select>
         <button 
-          onClick={onClose} 
-          className="bg-blue-500 text-white p-2 rounded mr-2"
+          onClick={handleConfirmClick} 
+          className="bg-blue-500 text-white p-2 rounded mr-2 text-black"
         >
           Submit
         </button>
         <button 
           onClick={onClose} 
-          className="bg-gray-500 text-white p-2 rounded"
+          className="bg-gray-500 text-white p-2 rounded text-black"
         >
           Close
         </button>
