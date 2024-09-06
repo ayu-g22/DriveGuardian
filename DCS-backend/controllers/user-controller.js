@@ -63,7 +63,7 @@ const loginUser = asyncHandler(async (req, res) => {
         expiresIn: '10h', // Token will expire in 1 hour
       });
 
-      res.status(200).json({ ok: true, userId : user._id, token : token });
+      res.status(200).json({ ok: true, userId: user._id, token: token });
     } else {
       res.status(401).json({ msg: "Phone Number or Password incorrect" });
     }
@@ -83,7 +83,7 @@ const getDrivers = asyncHandler(async (req, res) => {
     }
 
     // Send the populated members data
-    res.status(200).json({ ok: true , msg: "Members Fetched Successfully" , data : user.members });
+    res.status(200).json({ ok: true, msg: "Members Fetched Successfully", data: user.members });
   } catch (error) {
     res.status(500).json({ msg: "Server Error", error: error.message });
   }
@@ -91,61 +91,67 @@ const getDrivers = asyncHandler(async (req, res) => {
 
 const addDrivers = asyncHandler(async (req, res) => {
   try {
-    const { userId, members } = req.body;
+    const { uid, phoneNumber } = req.body;
 
-    // Validate input
-    if (!userId || !Array.isArray(members) || members.length === 0) {
-      return res.status(400).json({ msg: "Invalid input" });
-    }
-
-    //Find users by phone numbers
-    const users = await User.find({ phoneNumber: { $in: members } });
+    // Find users by phone numbers
+    const users = await User.find({ phoneNumber: { $in: phoneNumber } });
 
     // Extract the IDs of the users found
-    const memberObjectIds = users.map(user => user._id);
+    const memberObjectIds = users.map(user => user._id.toString());
 
-    //Find the target user and update the members array
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { $addToSet: { members: { $each: memberObjectIds } } }, // $addToSet ensures unique values
-      { new: true, runValidators: true }
-    );
+    // Find the target user
+    const targetUser = await User.findById(uid);
 
-    if (!updatedUser) {
+    if (!targetUser) {
       return res.status(404).json({ msg: "User not found" });
     }
 
-    res.status(200).json({ msg: "Members added successfully", data : updatedUser.members });
+    // Convert existing member IDs to string for comparison
+    const existingMemberIds = targetUser.members.map(member => member.toString());
+
+    // Check for existing members
+    const alreadyExists = memberObjectIds.filter(id => existingMemberIds.includes(id));
+
+    if (alreadyExists.length > 0) {
+      return res.status(400).json({ msg: "Member Already Exists" });
+    }
+
+    // Update the members array if no duplicates are found
+    targetUser.members = [...targetUser.members, ...memberObjectIds.map(id => Types.ObjectId(id))];
+    await targetUser.save();
+
+    res.status(200).json({ msg: "Members added successfully", data: targetUser.members });
   } catch (error) {
     res.status(500).json({ msg: "Server Error", error: error.message });
   }
 });
 
+
 const deleteDriver = asyncHandler(async (req, res) => {
-  const memId = req.query.memId; // Member ID to be removed (from query parameters)
-  const userId = req.body.userId; // User ID from which the member will be removed (from the req body)
+  const memId = req.query.memId; 
+  const userId = req.body.userId; 
 
   if (!memId) {
-      return res.status(400).json({ message: 'Missing Member Id.' });
+    return res.status(400).json({ message: 'Missing Member Id.' });
   }
   if (!userId) {
-      return res.status(400).json({ message: 'Missing User Id.' });
+    return res.status(400).json({ message: 'Missing User Id.' });
   }
 
   try {
-      // Update the user's record to pull the member ID from the members array
-      const result = await User.updateOne(
-          { _id: userId },
-          { $pull: { members: memId } }
-      );
+    // Update the user's record to pull the member ID from the members array
+    const result = await User.updateOne(
+      { _id: userId },
+      { $pull: { members: memId } }
+    );
 
-      if (result.modifiedCount === 0) {
-          return res.status(404).json({ message: 'User or member not found.' });
-      }
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ message: 'User or member not found.' });
+    }
 
-      res.status(200).json({ message: 'Member removed successfully.' });
+    res.status(200).json({ message: 'Member removed successfully.' });
   } catch (error) {
-      res.status(500).json({ message: 'Error removing member.', error: error.message });
+    res.status(500).json({ message: 'Server Error.', error: error.message });
   }
 });
 

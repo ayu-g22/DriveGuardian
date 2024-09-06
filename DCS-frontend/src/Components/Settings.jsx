@@ -49,7 +49,7 @@ const Settings = () => {
 
   // Fetch acquaintances data from backend on component mount
   useEffect(() => {
-    const uid = localStorage.getItem('userId');
+    const uid = localStorage.getItem('userid');
     // Replace with your backend API endpoint
     fetch('http://localhost:4000/api/get-drivers', {
       method: 'POST', // Change to POST method
@@ -76,7 +76,7 @@ const Settings = () => {
 
   // Handler functions
   const handleDeleteAcquaintance = (id) => {
-    const uid = localStorage.getItem('userId');
+    const uid = localStorage.getItem('userid');
     // Call API to delete acquaintance from backend
     fetch(`http://localhost:4000/api/members/${id}`, {
       method: 'DELETE',
@@ -135,9 +135,9 @@ const Settings = () => {
   };
 
   const handleAddAcquaintance = () => {
-    const uid = localStorage.getItem('userId');
+    const uid = localStorage.getItem('userid');
     // Call API to add acquaintance to backend
-    fetch('http://localhost:4000/api/acquaintances', {
+    fetch('http://localhost:4000/api/add-drivers', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
