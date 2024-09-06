@@ -6,6 +6,9 @@ import LogoutButton from './Components/Logout';
 import SignIn from './Components/Login';
 import Register from './Components/Register';
 import Rules from './Components/Rules';
+import Improve from './Components/Improve';
+import AboutUs from './Components/AboutUs';
+
 
 const App = () => {
   return (
@@ -15,6 +18,8 @@ const App = () => {
         <Route path="/" element={<SignIn />} />
         <Route path="/register" element={<Register />} />
         <Route path="/rules" element={<Rules />} />
+        <Route path="/improve" element={<Improve />} />
+        <Route path="/aboutus" element={<AboutUs />} />
 
         
         {/* Main page route */}

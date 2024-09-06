@@ -22,10 +22,18 @@ const Navbar = () => {
         <div className="hidden md:flex space-x-8">
         <a href="#" className="hover:text-orange-400 transition duration-300">Home</a>
           <a href="/rules" className="hover:text-orange-400 transition duration-300">Rules</a>
-          <a href="#improve" className="hover:text-orange-400 transition duration-300">Improve with us</a>
-          <a href="#about" className="hover:text-orange-400 transition duration-300">About Us</a>
+          <a href="/improve" className="hover:text-orange-400 transition duration-300">Improve with us</a>
+          <a href="/aboutus" className="hover:text-orange-400 transition duration-300">About Us</a>
         </div>
 
+        {/* Search Bar */}
+        <div className="hidden md:flex items-center space-x-4">
+            <input 
+              type="text" 
+              placeholder="Search..." 
+              className="px-4 py-2 rounded-md border border-gray-600 bg-gray-700 text-white rounded-2xl focus:outline-none focus:border-orange-400" 
+            />
+          </div>
 
         <div className="flex items-center ml-4">
         {/* Transfer Button */}
