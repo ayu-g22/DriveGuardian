@@ -24,7 +24,7 @@ const Challan = () => {
       if (result.ok) {
         const data = result.data.map(item => ({
           name: item.name,
-          lastDrive: item.Last_Drive,
+          lastDrive: item['Last Drive'],
           challan: item.Challan,
           amount: item.Amount,
           dcsChange: item.DCS_Charge

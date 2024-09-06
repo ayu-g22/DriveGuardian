@@ -121,4 +121,33 @@ const addDrivers = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { registerUser, loginUser, getDrivers, addDrivers };
+const deleteDriver = asyncHandler(async (req, res) => {
+  const memId = req.query.memId; // Member ID to be removed (from query parameters)
+  const userId = req.body.userId; // User ID from which the member will be removed (from the req body)
+
+  if (!memId) {
+      return res.status(400).json({ message: 'Missing Member Id.' });
+  }
+  if (!userId) {
+      return res.status(400).json({ message: 'Missing User Id.' });
+  }
+
+  try {
+      // Update the user's record to pull the member ID from the members array
+      const result = await User.updateOne(
+          { _id: userId },
+          { $pull: { members: memId } }
+      );
+
+      if (result.modifiedCount === 0) {
+          return res.status(404).json({ message: 'User or member not found.' });
+      }
+
+      res.status(200).json({ message: 'Member removed successfully.' });
+  } catch (error) {
+      res.status(500).json({ message: 'Error removing member.', error: error.message });
+  }
+});
+
+
+module.exports = { registerUser, loginUser, getDrivers, addDrivers, deleteDriver };
