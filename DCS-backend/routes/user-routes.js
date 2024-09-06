@@ -1,10 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const { loginUser,regiterUser } = require("../controllers/user-controller");
+const { loginUser,registerUser,getDrivers,addDrivers } = require("../controllers/user-controller");
 // const validateToken = require("../middlewares/validateTokenHandler");
 
-router.post("/register", regiterUser);
+router.post("/register", registerUser);
 
 router.post("/login", loginUser);
+
+router.post("/get-drivers", getDrivers);
+
+router.post("/add-drivers", addDrivers);
+
+// router.post("/add-drivers", addDrivers);
 
 module.exports = router;

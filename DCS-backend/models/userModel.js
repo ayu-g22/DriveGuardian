@@ -30,8 +30,11 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    members: [
+      { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    ]
   },
-  { Timestamp: true }
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("User", userSchema);

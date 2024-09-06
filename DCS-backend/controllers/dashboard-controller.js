@@ -13,12 +13,12 @@ const getChallan = asyncHandler(async (req, res) => {
         const user = await User.find({ userId: objectId });
 
         if (!user) {
-            return res.status(404).json({ message: "User not found" });
+            return res.status(404).json({ msg: "User not found" });
         }
 
         res.status(200).json({ok : true , data : user});
     } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message });
+        res.status(500).json({ msg: "Server error", error: error.message });
     }
 });
 
