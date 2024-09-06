@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
-import logo from '../logo.png';
-import bg from '../bg.png';
+import logo from '../images/logo.png';
+import bg from '../images/bg.png';
 import NavHalf from './NavHalf';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

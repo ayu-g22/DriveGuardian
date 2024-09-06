@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './Components/Navbar';
 import Challan from './Components/Challan';
-import LogoutButton from './Components/Logout';
 import SignIn from './Components/Login';
 import Register from './Components/Register';
 import Rules from './Components/Rules';
@@ -21,6 +20,7 @@ const App = () => {
         <Route path="/improve" element={<Improve />} />
         <Route path="/aboutus" element={<AboutUs />} />
 
+
         
         {/* Main page route */}
         <Route
@@ -29,7 +29,6 @@ const App = () => {
             <div className="relative min-h-screen bg-gray-100">
               <Navbar />
               <Challan />
-              <LogoutButton />
             </div>
           }
         />

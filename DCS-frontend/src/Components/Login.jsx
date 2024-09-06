@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
-import logo from '../logo.png';
-import bg from '../bg.png';
+import logo from '../images/logo.png';
+import bg from '../images/bg.png';
 import NavHalf from './NavHalf';
 
 const SignIn = () => {
@@ -79,7 +79,7 @@ const SignIn = () => {
           toast.error('Sign in error: ' + result.msg, { position: 'top-center' });
       }
     } catch (error) {
-      toast.error('Network error', { position: 'top-center' });
+      console.log(error);
     }
   };
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import logo from '../logo.png'
+import logo from '../images/logo.png'
 
 const NavHalf = () => {
   return (
@@ -24,14 +24,14 @@ const NavHalf = () => {
             <input 
               type="text" 
               placeholder="Search..." 
-              className="px-4 py-2 rounded-md border border-gray-600 bg-gray-700 text-white rounded-2xl focus:outline-none focus:border-orange-400" 
+              className="px-4 py-2 border border-gray-600 bg-gray-700 text-white focus:outline-none focus:border-orange-400 rounded-3xl" 
             />
           </div>
 
           {/* User Profile / Login */}
           <div className="hidden md:flex items-center space-x-4">
-            <a href="/" className="hover:text-orange-400 transition duration-300">Login</a>
-            <a href="/register" className="hover:text-orange-400 transition duration-300">New User</a>
+            <a href="/login" className="hover:text-orange-400 transition duration-300">Login</a>
+            <a href="/" className="hover:text-orange-400 transition duration-300">Sign Up</a>
           </div>
 
           {/* Mobile Menu Button */}
