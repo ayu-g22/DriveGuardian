@@ -1,36 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import GaugeChart from 'react-gauge-chart';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const DCSGauge = () => {
-  const [dcsValue, setDCSValue] = useState(0.5); // Initialize the gauge value (0.0 to 1.0)
+  const [dcsValue, setDCSValue] = useState(0); // Initialize with a default value
+  const [loading, setLoading] = useState(true); // Loading state to handle API call
+  const [error, setError] = useState(null); // Error state to handle errors
 
   // Function to convert the DCS value to a gauge scale (0.0 to 1.0)
-  const getGaugeValue = () => dcsValue / 100;
+  const getGaugeValue = () => dcsValue / 1000;
+
+  // Fetch DCS value from the backend
+  useEffect(() => {
+    const fetchDCSValue = async () => {
+      try {
+        const response = await fetch('http://localhost:4000/api/dcs-value'); // Replace with your backend endpoint
+        if (!response.ok) {
+          throw new Error('Failed to fetch DCS value');
+        }
+        const data = await response.json();
+        setDCSValue(data.dcsValue); // Assuming the response is in the form { dcsValue: 500 }
+        setLoading(false); // Set loading to false once data is fetched
+      } catch (error) {
+        setDCSValue(0);
+        toast.error('Error fetching DCS value');
+        setLoading(false);
+      }
+    };
+
+    fetchDCSValue();
+  }, []);
 
   return (
     <div className="bg-white rounded-md shadow-md p-6">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">Total DCS Value</h2>
-      <GaugeChart
-        id="dcs-gauge"
-        nrOfLevels={3} // Number of levels/colors on the gauge
-        colors={["#FF5F6D", "#FFC371", "#00C49F"]} // Colors for the gauge levels
-        arcWidth={0.3} // Width of the gauge arc
-        percent={getGaugeValue()} // Value to be displayed (0.0 to 1.0)
-        needleColor="#000000" // Needle color
-        textColor="#000000" // Text color
-        animate={true} // Animation when the value changes
-      />
-      <div className="mt-4 text-center">
-        {/* <input
-          type="range"
-          min="0"
-          max="100"
-          value={dcsValue}
-          onChange={(e) => setDCSValue(e.target.value                                                                   )}
-          className="w-full"
-        /> */}
-        <span className="text-lg font-semibold">{`Current DCS Value: ${dcsValue}`}</span>
-      </div>
+      <h2 className="text-2xl font-bold mb-4 text-gray-800 text-center">Total DCS Value</h2>
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <ToastContainer />
+      ) : (
+        <></>
+      )}
+        <>
+          <GaugeChart
+            id="dcs-gauge"
+            nrOfLevels={30}
+            colors={["#FF5F6D", "#FFC371", "#00C49F"]}
+            arcWidth={0.3}
+            percent={getGaugeValue()}
+            needleColor="#000000"
+            textColor="#000000"
+            animate={true}
+          />
+          <div className="mt-4 text-center">
+            <span className="text-lg font-semibold">{`Current DCS Value: ${dcsValue}`}</span>
+          </div>
+        </>
     </div>
   );
 };

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import the toastify CSS
 import DCSGauge from './Slider';
 import Instructions from './Scoring';
 
@@ -12,7 +14,6 @@ const Challan = () => {
     try {
       const response = await fetch('http://localhost:4000/api/dashboard/challan'); // Adjust URL if needed
       const result = await response.json();
-      
       if (result.ok) {
         const data = result.data.map(item => ({
           name: item.name,
@@ -22,11 +23,12 @@ const Challan = () => {
           dcsChange: item.DCS_Charge
         }));
         setChallanData(data);
+        toast.success('Data fetched successfully!', { position: "top-center" }); // Show success toast
       } else {
-        console.error('Failed to fetch data:', result.message);
+        toast.error(`Failed to fetch data: ${result.message}`, { position: "top-center" }); // Show error toast
       }
     } catch (error) {
-      console.error('Error fetching data:', error);
+      toast.error(`Error fetching data: ${error.message}`, { position: "top-center" }); // Show error toast
     }
   };
 
@@ -42,11 +44,14 @@ const Challan = () => {
 
   return (
     <div className="flex flex-col md:flex-row justify-between p-6 mt-20">
+      {/* Toaster Container */}
+      <ToastContainer />
+
       {/* Left column for the Challan table */}
       <div className="w-full md:w-4/6 p-4 bg-white rounded-md shadow-md">
         <h1 className="text-3xl font-bold mb-6 text-gray-800 text-center">Challan History</h1>
         
-        {/* Table Container with Scroll */}
+        {/* Table Container */}
         <div>
           <table className="min-w-full bg-white border border-gray-300 shadow-md rounded-md">
             <thead>
