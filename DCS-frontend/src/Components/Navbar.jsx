@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
@@ -22,7 +23,7 @@ const Navbar = () => {
       });
       const result = await response.json();
       if (result.ok) {
-        setOptions(result.data.map(item => item.name)); // Extract names for dropdown
+        setOptions(result.data.map(item => item)); // Extract names for dropdown
       } else {
         toast.error(`Failed to fetch data: ${result.message}`, { position: "top-center" });
       }
