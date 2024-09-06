@@ -47,7 +47,6 @@ const Register = () => {
   
       if (response.ok) {
         const data = await response.json();
-        console.log('Registration successful:', data);
         toast.success('Registration successful!');
         navigate('/dashboard'); // Redirect to the dashboard
       } else {

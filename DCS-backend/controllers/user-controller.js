@@ -83,7 +83,7 @@ const getDrivers = asyncHandler(async (req, res) => {
     }
 
     // Send the populated members data
-    res.status(200).json({ ok: true , msg: "Members Fetched Successfully" , members: user.members });
+    res.status(200).json({ ok: true , msg: "Members Fetched Successfully" , data : user.members });
   } catch (error) {
     res.status(500).json({ msg: "Server Error", error: error.message });
   }
@@ -115,7 +115,7 @@ const addDrivers = asyncHandler(async (req, res) => {
       return res.status(404).json({ msg: "User not found" });
     }
 
-    res.status(200).json({ msg: "Members added successfully", members: updatedUser.members });
+    res.status(200).json({ msg: "Members added successfully", data : updatedUser.members });
   } catch (error) {
     res.status(500).json({ msg: "Server Error", error: error.message });
   }

@@ -53,7 +53,7 @@ const Settings = () => {
     // Replace with your backend API endpoint
     fetch('http://localhost:4000/api/get-drivers')
       .then((response) => response.json())
-      .then((data) => setSettings((prev) => ({ ...prev, acquitances: {name:data.name,phone: data.phoneNumber} })))
+      .then((data) => setSettings((prev) => ({ ...prev, acquitances: {name:data?.name,phone: data?.phoneNumber} })))
       .catch((error) => console.error('Error fetching acquaintances:', error));
   }, []);
 

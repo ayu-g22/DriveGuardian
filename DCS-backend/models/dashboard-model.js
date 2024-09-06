@@ -5,6 +5,9 @@ const userSchema = mongoose.Schema(
     name: {
       type: String
     },
+    userId: {
+      type: String
+    },
     lastDrive: {
         type: Date
     },

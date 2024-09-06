@@ -3,6 +3,6 @@ const router = express.Router();
 const { getChallan ,regiterUser } = require("../controllers/dashboard-controller");
 // const validateToken = require("../middlewares/validateTokenHandler");
 
-router.get("/challan", getChallan);
+router.post("/challan", getChallan);
 
 module.exports = router;

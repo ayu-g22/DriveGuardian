@@ -25,7 +25,7 @@ const Navbar = () => {
         }),
       }); // Adjust the endpoint as needed
       const data = await response.json();
-      setOptions(['Me', ...data]); // Prepend "Me" to the list
+      setOptions(['Me', ...data.data]); // Prepend "Me" to the list
     };
 
     fetchOptions();
