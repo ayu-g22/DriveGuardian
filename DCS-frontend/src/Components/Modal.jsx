@@ -1,4 +1,3 @@
-// Modal.js
 import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { io } from 'socket.io-client';
@@ -9,9 +8,21 @@ const Modal = ({ isOpen, onClose, options }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
+    const uid = localStorage.getItem('userid');
     // Initialize socket connection
-    const newSocket = io('http://localhost:4000');
+    const newSocket = io('http://localhost:4001', {
+      query: { userId: uid },
+      withCredentials: true,
+      transports: ['websocket', 'polling'],
+    });
     setSocket(newSocket);
+
+    // Listen for an incoming request
+    newSocket.on('receiveRequest', (data) => {
+      const { shiftedFrom, recipientId, requestMessage } = data;
+      // Show the modal with "Accept" or "Decline" buttons
+      handleIncomingRequest(shiftedFrom, recipientId, requestMessage);
+    });
 
     // Clean up socket connection on component unmount
     return () => {
@@ -22,22 +33,26 @@ const Modal = ({ isOpen, onClose, options }) => {
   }, []);
 
   const handleConfirmClick = async () => {
-    const timestamp = Date.now();
     if (selectedOption) {
       try {
-        const uid=localStorage.getItem('userid');
+        const shiftedFrom = localStorage.getItem('userid');
+        const shiftedTo = selectedOption;
         // Send the selected option to the backend API
         const response = await fetch('http://localhost:4000/api/transfer/transfer-control', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ uid,selectedOption }),
+          body: JSON.stringify({ shiftedFrom, shiftedTo }),
         });
 
         const result = await response.json();
         if (result.ok) {
           // Emit the selected option using socket.io
           if (socket) {
-            socket.emit('transfer', { uid,selectedOption });
+            socket.emit('transfer', {
+              recipientId: selectedOption,
+              shiftedFrom,
+              requestMessage: "Do you want to accept?",
+            });
           }
 
           toast.success('Data updated successfully!', { position: 'top-center' });
@@ -47,11 +62,24 @@ const Modal = ({ isOpen, onClose, options }) => {
       } catch (error) {
         toast.error(`Error updating data: ${error.message}`, { position: 'top-center' });
       } finally {
-        // Close the modal
         onClose();
       }
     } else {
       toast.warning('Please select an option!', { position: 'top-center' });
+    }
+  };
+
+  const handleIncomingRequest = (shiftedFrom, recipientId, requestMessage) => {
+    // Display a modal to the recipient user
+    const isAccepted = window.confirm(`${requestMessage} from user ${shiftedFrom}.`);
+
+    // Emit acceptance or rejection response
+    if (socket) {
+      socket.emit('response', {
+        recipientId,
+        shiftedFrom,
+        isAccepted,
+      });
     }
   };
 
