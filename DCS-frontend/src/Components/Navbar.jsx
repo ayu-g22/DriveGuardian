@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Modal from './Modal';
 import logo from '../images/logo.png';
+import RequestHandler from './User2Modal'
 
 const Navbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -79,6 +80,7 @@ const Navbar = () => {
             onClose={handleCloseModal} 
             options={options} 
           />
+          <RequestHandler />
           <div className="relative flex items-center">
             <button onClick={toggleDropdown} className="text-white focus:outline-none">
               <FaUserCircle className="w-8 h-8" />

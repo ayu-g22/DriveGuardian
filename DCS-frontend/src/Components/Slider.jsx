@@ -30,8 +30,8 @@ const DCSGauge = () => {
         setDCSValue(data?.dcsValue); // Assuming the response is in the form { dcsValue: 500 }
         setLoading(false); // Set loading to false once data is fetched
       } catch (error) {
-        setDCSValue(0);
-        toast.error('Error fetching DCS value');
+        setDCSValue(400);
+        // toast.error('Error fetching DCS value');
         setLoading(false);
       }
     };
