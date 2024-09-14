@@ -5,16 +5,14 @@ const mongoose = require("mongoose");
 
 const transferControl = asyncHandler(async (req, res) => {
     const { shiftedFrom , shiftedTo } = req.body;
-    console.log('body :',req.body)
-    const ObjectId = new mongoose.Types.ObjectId(shiftedFrom);
-    console.log('objectId :', ObjectId);
-    const user = await User.findById({_id: ObjectId});
+    const shiftedFromObjectId = new mongoose.Types.ObjectId(shiftedFrom);
+    
+      const user = await User.findById({_id: shiftedFromObjectId});
 
     if(!user){
         return res.status(404).json({msg : "Invalid User"});
     }
 
-    console.log('user :',user);
     const vehicleNumber = user.vehicleNumber;
 
     const config = await TransferControl.create({

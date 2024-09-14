@@ -117,7 +117,7 @@ const addDrivers = asyncHandler(async (req, res) => {
     }
 
     // Update the members array if no duplicates are found
-    targetUser.members = [...targetUser.members, ...memberObjectIds.map(id => Types.ObjectId(id))];
+    targetUser.members = [...targetUser.members, ...memberObjectIds.map(id =>new mongoose.Types.ObjectId(id))];
     await targetUser.save();
 
     res.status(200).json({ msg: "Members added successfully", data: targetUser.members });

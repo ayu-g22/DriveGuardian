@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const { loginUser,registerUser,getDrivers,addDrivers, deleteDriver } = require("../controllers/user-controller");
+const { getUserName } = require('../controllers/user-name');
 // const validateToken = require("../middlewares/validateTokenHandler");
+
+router.get('/users/:userId',getUserName);
 
 router.post("/register", registerUser);
 
