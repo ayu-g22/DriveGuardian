@@ -3,6 +3,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { io } from 'socket.io-client';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 const Modal = ({ isOpen, onClose, options }) => {
   const [selectedOption, setSelectedOption] = useState('');
   const [socket, setSocket] = useState(null);

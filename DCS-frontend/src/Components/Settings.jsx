@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import NavBar from './Navbar';
+import RequestHandler from './User2Modal';
 
 const Settings = () => {
   const [acquaintances, setAcquaintances] = useState([]);
@@ -389,6 +390,7 @@ const Settings = () => {
                     Add
                   </button>
                 </div>
+                <RequestHandler />
               </div>
             </div>
           )}

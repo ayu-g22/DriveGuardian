@@ -11,10 +11,34 @@ const Navbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [ownsVehicle, setOwnsVehicle] = useState(false); // State to track vehicle ownership
+
+  // Fetch the vehicle ownership status when the component mounts
+  useEffect(() => {
+    const uid = localStorage.getItem('userid');
+    if (uid) {
+      fetchVehicleOwnership(uid);
+    }
+  }, []);
+
+  const fetchVehicleOwnership = async (uid) => {
+    try {
+      const response = await fetch('http://localhost:4000/api/check-vehicle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ uid }),
+      });
+      const result = await response.json();
+      if (result.ok) {
+        setOwnsVehicle(result.ok); // Set ownership status
+      }
+    } catch (error) {
+      toast.error(`Error fetching vehicle data: ${error.message}`, { position: 'top-center' });
+    }
+  };
 
   const handleOpenModal = async () => {
     setIsModalOpen(true);
-    // Fetch options from backend
     const uid = localStorage.getItem('userid');
     try {
       const response = await fetch('http://localhost:4000/api/get-drivers', {
@@ -26,10 +50,10 @@ const Navbar = () => {
       if (result.ok) {
         setOptions(result.data.map(item => item)); // Extract names for dropdown
       } else {
-        toast.error(`Failed to fetch data: ${result.message}`, { position: "top-center" });
+        toast.error(`Failed to fetch data: ${result.message}`, { position: 'top-center' });
       }
     } catch (error) {
-      toast.error(`Error fetching data: ${error.message}`, { position: "top-center" });
+      toast.error(`Error fetching data: ${error.message}`, { position: 'top-center' });
     }
   };
 
@@ -61,24 +85,27 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex items-center space-x-4">
-          <input 
-            type="text" 
-            placeholder="Search..." 
-            className="px-4 py-2 border border-gray-600 bg-gray-700 text-white focus:outline-none focus:border-orange-400 rounded-3xl" 
+          <input
+            type="text"
+            placeholder="Search..."
+            className="px-4 py-2 border border-gray-600 bg-gray-700 text-white focus:outline-none focus:border-orange-400 rounded-3xl"
           />
         </div>
 
         <div className="flex items-center ml-4">
-          <button
-            onClick={handleOpenModal}
-            className="mx-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300 ml-4"
-          >
-            Transfer
-          </button>
+          {/* Conditionally render the "Transfer" button only if the user owns a vehicle */}
+          {ownsVehicle && (
+            <button
+              onClick={handleOpenModal}
+              className="mx-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300 ml-4"
+            >
+              Transfer
+            </button>
+          )}
           <Modal
-            isOpen={isModalOpen} 
-            onClose={handleCloseModal} 
-            options={options} 
+            isOpen={isModalOpen}
+            onClose={handleCloseModal}
+            options={options}
           />
           <RequestHandler />
           <div className="relative flex items-center">
