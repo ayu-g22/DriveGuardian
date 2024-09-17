@@ -5,7 +5,7 @@ const connectDb = require("./config/dbConnection");
 // const erorHandler = require("./middlewares/errorHandler");
 const dotenv = require("dotenv").config();
 const vehicleRoutes = require('./routes/vehicle');
-const cors = require("cors")
+const cors = require("cors");
 
 const app = express();
 const server = http.createServer(app);
@@ -65,6 +65,7 @@ io.on('connection', (socket) => {
   
 // app.use(erorHandler);
 app.use("/api" , require("./routes/user-routes"));
+
 
 app.use("/api/dashboard" , require("./routes/dashboard-routes"));
 app.use('/api', vehicleRoutes);
