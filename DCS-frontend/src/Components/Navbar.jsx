@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Modal from './Modal';
 import logo from '../images/logo.png';
+import { Link } from 'react-router-dom';  // Import Link from react-router-dom
 import RequestHandler from './User2Modal'
 
 const Navbar = () => {
@@ -12,14 +13,9 @@ const Navbar = () => {
   const [options, setOptions] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [ownsVehicle, setOwnsVehicle] = useState(false); // State to track vehicle ownership
+  // const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
 
-  // Fetch the vehicle ownership status when the component mounts
-  useEffect(() => {
-    const uid = localStorage.getItem('userid');
-    if (uid) {
-      fetchVehicleOwnership(uid);
-    }
-  }, []);
+
 
   const fetchVehicleOwnership = async (uid) => {
     try {
@@ -74,7 +70,9 @@ const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center">
           <img src={logo} className="h-12 w-auto" alt="Logo" />
-          <span className="text-lg font-semibold">DriveGuardian</span>
+          <Link to="/"> {/* Wrap the DriveGuardian text with Link */}
+              <span className="text-lg font-semibold cursor-pointer">DriveGuardian</span>
+            </Link>
         </div>
 
         <div className="hidden md:flex space-x-8">

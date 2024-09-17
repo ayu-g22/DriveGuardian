@@ -1,11 +1,42 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import NavHalf from './NavHalf';
 import drivingTipsImage from '../images/driving-tips.jpg'; // Example image
+import Navbar from './Navbar';
 
 const ImproveWithUs = () => {
+  const [dashboardData, setDashboardData] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Get token from local storage or cookies
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      axios.get('http://localhost:4000/api/auth', {
+        headers: {
+          Authorization: `Bearer ${token}`,  // Add Bearer prefix
+        }
+      })
+      .then((response) => {
+        setDashboardData(response.data);
+      })
+      .catch((err) => {
+        setError('You are not authorized to access this page');
+      });
+    } else {
+      setError('No token found. Please login first.');
+    }
+  }, []);
   return (
     <>
-      <NavHalf />
+    {dashboardData ? (
+              <Navbar />
+
+      ) : (
+        <NavHalf />
+
+      )}
       <div className="flex flex-col items-center min-h-screen bg-gray-100 p-20">
         {/* Improve With Us Section */}
         <div className="p-8 w-full max-w-4xl bg-white rounded-lg shadow-md">

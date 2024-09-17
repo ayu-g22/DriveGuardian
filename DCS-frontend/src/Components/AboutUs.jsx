@@ -1,12 +1,44 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import NavHalf from './NavHalf';
 import femalePic from '../team/female.png' ;
 import malePic from '../team/male.png';
+import Navbar from './Navbar';
 
 const AboutUs = () => {
+  const [dashboardData, setDashboardData] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Get token from local storage or cookies
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      axios.get('http://localhost:4000/api/auth', {
+        headers: {
+          Authorization: `Bearer ${token}`,  // Add Bearer prefix
+        }
+      })
+      .then((response) => {
+        setDashboardData(response.data);
+      })
+      .catch((err) => {
+        setError('You are not authorized to access this page');
+      });
+    } else {
+      setError('No token found. Please login first.');
+    }
+  }, []);
   return (
     <>
+    {dashboardData ? (
+          <Navbar />
+
+      ) : (
         <NavHalf />
+
+      )}
+        
     <div className="bg-gray-100 min-h-screen p-24">
       <div className="container mx-auto max-w-4xl">
         {/* Introduction */}
@@ -32,9 +64,9 @@ const AboutUs = () => {
             {[
               { name: 'Arihant Jain', role: 'Team Lead', imgSrc: malePic },
               { name: 'Ayush Panwar', role: 'Backend Developer', imgSrc: malePic },
-              { name: 'Sapna', role: 'Data Scientist', imgSrc: femalePic },
+              { name: 'Sapna Chaudhary', role: 'Data Scientist', imgSrc: femalePic },
               { name: 'Lalit Kumar', role: 'Content Writer', imgSrc: malePic },
-              { name: 'Satyam Shah', role: 'UI/UX Designer', imgSrc: malePic },
+              { name: 'Satyam Sha', role: 'UI/UX Designer', imgSrc: malePic },
               { name: 'Ayush Gupta', role: 'Frontend Developer', imgSrc: malePic },
             ].map((member, index) => (
               <div key={index} className="bg-white p-6 rounded-lg shadow-lg text-center">

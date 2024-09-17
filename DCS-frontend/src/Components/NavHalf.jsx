@@ -1,5 +1,6 @@
-import React from 'react'
-import logo from '../images/logo.png'
+import React from 'react';
+import { Link } from 'react-router-dom';  // Import Link from react-router-dom
+import logo from '../images/logo.png';
 
 const NavHalf = () => {
   return (
@@ -9,14 +10,16 @@ const NavHalf = () => {
           {/* Site Name */}
           <div className="flex items-center space-x-4">
             <img src={logo} alt="Site Logo" className="h-12 w-auto" />
-            <span className="text-lg font-semibold">DriveGuardian</span>
+            <Link to="/"> {/* Wrap the DriveGuardian text with Link */}
+              <span className="text-lg font-semibold cursor-pointer">DriveGuardian</span>
+            </Link>
           </div>
 
           {/* Menu Links */}
           <div className="hidden md:flex space-x-8">
-            <a href="/rules" className="hover:text-orange-400 transition duration-300">Rules</a>
-            <a href="/improve" className="hover:text-orange-400 transition duration-300">Improve with us</a>
-            <a href="/aboutus" className="hover:text-orange-400 transition duration-300">About Us</a>
+            <Link to="/rules" className="hover:text-orange-400 transition duration-300">Rules</Link>
+            <Link to="/improve" className="hover:text-orange-400 transition duration-300">Improve with us</Link>
+            <Link to="/aboutus" className="hover:text-orange-400 transition duration-300">About Us</Link>
           </div>
           
           {/* Search Bar */}
@@ -30,8 +33,8 @@ const NavHalf = () => {
 
           {/* User Profile / Login */}
           <div className="hidden md:flex items-center space-x-4">
-            <a href="/" className="hover:text-orange-400 transition duration-300">Login</a>
-            <a href="/register" className="hover:text-orange-400 transition duration-300">Sign Up</a>
+            <Link to="/" className="hover:text-orange-400 transition duration-300">Login</Link>
+            <Link to="/register" className="hover:text-orange-400 transition duration-300">Sign Up</Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -60,13 +63,13 @@ const NavHalf = () => {
 
         {/* Mobile Menu */}
         <div id="mobile-menu" className="md:hidden hidden mt-4">
-          <a href="/rules" className="block py-2 px-4 hover:text-orange-400">Rules</a>
-          <a href="/improve" className="block py-2 px-4 hover:text-orange-400">Improve with us</a>
-          <a href="#about" className="block py-2 px-4 hover:text-orange-400">About Us</a>
+          <Link to="/rules" className="block py-2 px-4 hover:text-orange-400">Rules</Link>
+          <Link to="/improve" className="block py-2 px-4 hover:text-orange-400">Improve with us</Link>
+          <Link to="/aboutus" className="block py-2 px-4 hover:text-orange-400">About Us</Link>
         </div>
       </nav>
     </div>
-  )
-}
+  );
+};
 
-export default NavHalf
+export default NavHalf;

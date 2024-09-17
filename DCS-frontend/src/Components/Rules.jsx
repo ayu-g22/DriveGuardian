@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import NavHalf from './NavHalf';
+import Navbar from './Navbar';
 import seatbeltImage from '../images/seatbelt.jpg'; // Example image
 import speedLimitImage from '../images/speed-limit.jpeg'; // Example image
 import mobilePhoneImage from '../images/mobile-phone.jpg'; // Example image
@@ -55,9 +57,39 @@ const Rules = () => {
     },
   ];
 
+  const [dashboardData, setDashboardData] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Get token from local storage or cookies
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      axios.get('http://localhost:4000/api/auth', {
+        headers: {
+          Authorization: `Bearer ${token}`,  // Add Bearer prefix
+        }
+      })
+      .then((response) => {
+        setDashboardData(response.data);
+      })
+      .catch((err) => {
+        setError('You are not authorized to access this page');
+      });
+    } else {
+      setError('No token found. Please login first.');
+    }
+  }, []);
+
   return (
     <>
-      <NavHalf />
+      {dashboardData ? (
+              <Navbar />
+
+      ) : (
+        <NavHalf />
+
+      )}
       {/* Parent Container */}
       <div className="flex flex-col items-center min-h-screen bg-gray-100 p-4">
         {/* Rules Section */}
