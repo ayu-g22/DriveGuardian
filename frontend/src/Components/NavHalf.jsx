@@ -11,7 +11,7 @@ const NavHalf = () => {
           <div className="flex items-center space-x-4">
             <img src={logo} alt="Site Logo" className="h-12 w-auto" />
             <Link to="/"> {/* Wrap the DriveGuardian text with Link */}
-              <span className="text-lg font-semibold cursor-pointer">DriveGuardian</span>
+              <span className="text-lg font-semibold cursor-pointer">DriveMe</span>
             </Link>
           </div>
 

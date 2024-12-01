@@ -359,7 +359,7 @@ const Settings = () => {
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <h2 className="text-2xl font-semibold text-gray-800 mb-4">Add Acquaintance</h2>
                 <label className="block mb-4">
-                  <span className="text-gray-700">Name</span>
+                  <span className="text-gray-700">Unique name</span>
                   <input
                     type="text"
                     value={newAcquaintance.name}

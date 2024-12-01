@@ -53,6 +53,13 @@ const Navbar = () => {
     }
   };
 
+  useEffect(() => {
+    const uid = localStorage.getItem('userid');
+    if (uid) {
+      fetchVehicleOwnership(uid); // Call function with user ID
+    }
+  }, []); 
+
   const handleCloseModal = () => setIsModalOpen(false);
 
   const toggleDropdown = () => {
@@ -71,7 +78,7 @@ const Navbar = () => {
         <div className="flex items-center">
           <img src={logo} className="h-12 w-auto" alt="Logo" />
           <Link to="/"> {/* Wrap the DriveGuardian text with Link */}
-              <span className="text-lg font-semibold cursor-pointer">DriveGuardian</span>
+              <span className="text-lg font-semibold cursor-pointer">DriveMe</span>
             </Link>
         </div>
 

@@ -3,9 +3,6 @@ import axios from 'axios';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import SignIn from './Components/Login';
 import Register from './Components/Register';
-import Rules from './Components/Rules';
-import Improve from './Components/Improve';
-import AboutUs from './Components/AboutUs';
 import Settings from './Components/Settings';
 import Dashboard from './Components/Dashboard';
 
@@ -58,9 +55,6 @@ const App = () => {
 
         {/* SignIn page route */}
         <Route path="/register" element={<Register />} />
-        <Route path="/rules" element={<Rules />} />
-        <Route path="/improve" element={<Improve />} />
-        <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/settings" element={<Settings />} />
 
         {/* Main page route */}
