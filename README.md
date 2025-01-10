@@ -1,6 +1,6 @@
-# DriveMe - Vehicle Ownership and Driver Management System
+# DriveGuardian - Vehicle Ownership and Driver Management System
 
-**DriveMe** is a web application designed to manage and track vehicle ownership and driver history, with a focus on role-based access. The system provides two different dashboards based on the user's role: vehicle owner or driver.
+**DriveGuardian** is a web application designed to manage and track vehicle ownership and driver history, with a focus on role-based access. The system provides two different dashboards based on the user's role: vehicle owner or driver.
 
 ## Features
 
@@ -26,7 +26,7 @@ Follow the steps below to set up the application locally:
 
 ### 1. **Frontend Setup**
 
-- Open the `DriveMe` folder in your preferred code editor.
+- Open the `DriveGuardian` folder in your preferred code editor.
 - Navigate to the `frontend` directory in your terminal:
     cd frontend
   Install the necessary dependencies:
