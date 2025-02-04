@@ -15,9 +15,13 @@ const Navbar = () => {
   const [ownsVehicle, setOwnsVehicle] = useState(false); // State to track vehicle ownership
   // const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
 
+  useEffect(()=>{
+    fetchVehicleOwnership()
+  },[])
 
+  const fetchVehicleOwnership = async () => {
 
-  const fetchVehicleOwnership = async (uid) => {
+    const uid = localStorage.getItem("userid")
     try {
       const response = await fetch('http://localhost:4000/api/check-vehicle', {
         method: 'POST',
